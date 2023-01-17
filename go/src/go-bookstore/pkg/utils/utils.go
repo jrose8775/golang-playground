@@ -1,18 +1,15 @@
-package config
+package utils
 
 import (
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
 )
 
-var (
-	db *gorm.DB
-)
-
-func Connect() {
-	d, err := gorm.Open("mysql", "jrose8775:TEST/simplerest?")
-	if err != nil {
-		panic(err)
+func ParseBody(r *http.Request, x interface{}) {
+	if body, err := ioutil.ReadAll(r.Body); err == nil {
+		if err := json.Unmarshal([]byte(body), x); err != nil {
+			return
+		}
 	}
-	db = d
 }
